@@ -1,6 +1,7 @@
 package com.ilisi.roommatebackend.controller;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
+import com.ilisi.roommatebackend.core.utility.ResponseBody;
 import com.ilisi.roommatebackend.model.Locateur;
 import com.ilisi.roommatebackend.service.LocateurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,35 +17,44 @@ import java.util.List;
 public class LocateurController {
 
     @Autowired
-    LocateurService colocataireService;
+    LocateurService locateurService;
 
     @PostMapping
-    public ResponseEntity<Locateur> insert(@RequestBody() Locateur colocataire){
-        return new ResponseEntity<Locateur>(colocataireService.create(colocataire), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<Locateur>> insert(@RequestBody() Locateur locateur){
+        Locateur locat=locateurService.create(locateur);
+        return new ResponseEntity<ResponseBody<Locateur>>
+                (new ResponseBody<Locateur>(locat), HttpStatus.OK) ;
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<Locateur> edit(@RequestBody() Locateur colocataire){
-        return new ResponseEntity<Locateur>(colocataireService.update(colocataire), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<Locateur>> edit(@RequestBody() Locateur locateur){
+        return new ResponseEntity<ResponseBody<Locateur>>
+                (new ResponseBody<Locateur>(locateurService.update(locateur), "Entity updated"), HttpStatus.OK) ;
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Locateur> delete(@RequestBody() Locateur colocataire){
-        colocataireService.delete(colocataire);
-        return new ResponseEntity<>(null, HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<Locateur>> delete(@RequestBody() Locateur locateur){
+        locateurService.delete(locateur);
+        return new ResponseEntity<ResponseBody<Locateur>>
+                (new ResponseBody<Locateur>(), HttpStatus.OK) ;
     }
 
     @GetMapping
     public ResponseEntity<List<Locateur>> get(){
-        return new ResponseEntity<List<Locateur>>(colocataireService.retrieve(), HttpStatus.OK) ;
+        return new ResponseEntity<List<Locateur>>(locateurService.retrieve(), HttpStatus.OK) ;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Locateur> getById(@PathVariable("id")int id){
+    public ResponseEntity<ResponseBody<Locateur>> getById(@PathVariable("id")int id){
         try {
-            return new ResponseEntity<Locateur>(colocataireService.findById(id), HttpStatus.OK) ;
+            Locateur locateur =locateurService.findById(id);
+            if(locateur!=null) return new ResponseEntity<ResponseBody<Locateur>>
+                    (new ResponseBody<Locateur>(locateur), HttpStatus.OK) ;
+            return new ResponseEntity<ResponseBody<Locateur>>
+                    (new ResponseBody<>(null, "Entity not found"), HttpStatus.OK) ;
         }catch(BusinessException e){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND) ;
+            return new ResponseEntity<ResponseBody<Locateur>>
+                    (new ResponseBody<Locateur>(null, "Entity not found"),HttpStatus.NOT_FOUND) ;
         }
     }
 }

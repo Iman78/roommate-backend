@@ -1,7 +1,6 @@
 package com.ilisi.roommatebackend.service;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
-import com.ilisi.roommatebackend.model.Colocataire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 

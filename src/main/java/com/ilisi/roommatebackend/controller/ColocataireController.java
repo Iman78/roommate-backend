@@ -1,7 +1,7 @@
 package com.ilisi.roommatebackend.controller;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
-import com.ilisi.roommatebackend.core.exception.utility.ResponseBody;
+import com.ilisi.roommatebackend.core.utility.ResponseBody;
 import com.ilisi.roommatebackend.model.Colocataire;
 import com.ilisi.roommatebackend.service.ColocataireService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +29,20 @@ public class ColocataireController {
     public ResponseEntity<ResponseBody<Colocataire>> insert(@RequestBody() Colocataire colocataire){
         Colocataire coloc=colocataireService.create(colocataire);
         return new ResponseEntity<ResponseBody<Colocataire>>
-                (new ResponseBody<Colocataire>(), HttpStatus.OK) ;
+                (new ResponseBody<Colocataire>(coloc), HttpStatus.OK) ;
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<Colocataire> edit(@RequestBody() Colocataire colocataire){
-        return new ResponseEntity<Colocataire>(colocataireService.update(colocataire), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<Colocataire>> edit(@RequestBody() Colocataire colocataire){
+        return new ResponseEntity<ResponseBody<Colocataire>>
+                (new ResponseBody<Colocataire>(colocataireService.update(colocataire), "Entity updated"), HttpStatus.OK) ;
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Colocataire> delete(@RequestBody() Colocataire colocataire){
+    public ResponseEntity<ResponseBody<Colocataire>> delete(@RequestBody() Colocataire colocataire){
         colocataireService.delete(colocataire);
-        return new ResponseEntity<>(null, HttpStatus.OK) ;
+        return new ResponseEntity<ResponseBody<Colocataire>>
+                (new ResponseBody<Colocataire>(), HttpStatus.OK) ;
     }
 
     @GetMapping
@@ -49,11 +51,16 @@ public class ColocataireController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Colocataire> getById(@PathVariable("id")int id){
+    public ResponseEntity<ResponseBody<Colocataire>> getById(@PathVariable("id")int id){
         try {
-            return new ResponseEntity<Colocataire>(colocataireService.findById(id), HttpStatus.OK) ;
+            Colocataire colocataire =colocataireService.findById(id);
+            if(colocataire!=null) return new ResponseEntity<ResponseBody<Colocataire>>
+                    (new ResponseBody<Colocataire>(colocataire), HttpStatus.OK) ;
+            return new ResponseEntity<ResponseBody<Colocataire>>
+                    (new ResponseBody<>(null, "Entity not found"), HttpStatus.OK) ;
         }catch(BusinessException e){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND) ;
+            return new ResponseEntity<ResponseBody<Colocataire>>
+                    (new ResponseBody<Colocataire>(null, "Entity not found"),HttpStatus.NOT_FOUND) ;
         }
     }
 }

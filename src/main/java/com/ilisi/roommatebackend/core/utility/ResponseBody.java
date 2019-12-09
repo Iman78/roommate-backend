@@ -1,4 +1,4 @@
-package com.ilisi.roommatebackend.core.exception.utility;
+package com.ilisi.roommatebackend.core.utility;
 
 
 import lombok.Getter;
