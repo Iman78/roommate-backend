@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/colocataire")
 public class ColocataireController {
