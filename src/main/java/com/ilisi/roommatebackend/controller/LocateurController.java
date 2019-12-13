@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RestController
 @RequestMapping("/locateur")
 public class LocateurController {
@@ -40,8 +40,9 @@ public class LocateurController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Locateur>> get(){
-        return new ResponseEntity<List<Locateur>>(locateurService.retrieve(), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<List<Locateur>>> get(){
+        return new ResponseEntity<ResponseBody<List<Locateur>>>(
+                new ResponseBody<>(locateurService.retrieve()), HttpStatus.OK) ;
     }
 
     @GetMapping("/{id}")

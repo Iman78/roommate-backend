@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/colocataire")
 public class ColocataireController {
@@ -46,8 +46,9 @@ public class ColocataireController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Colocataire>> get(){
-        return new ResponseEntity<List<Colocataire>>(colocataireService.retrieve(), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<List<Colocataire>>> get(){
+        return new ResponseEntity<>(
+                new ResponseBody<>(colocataireService.retrieve()), HttpStatus.OK) ;
     }
 
     @GetMapping("/{id}")
