@@ -36,7 +36,7 @@ public class Colocataire extends User {
     @Setter
     private String origine;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="filiere_id")
     @Getter
     @Setter

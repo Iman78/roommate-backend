@@ -2,8 +2,11 @@ package com.ilisi.roommatebackend.controller;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
+import com.ilisi.roommatebackend.dto.ColocataireDto;
 import com.ilisi.roommatebackend.model.Colocataire;
+import com.ilisi.roommatebackend.model.Filiere;
 import com.ilisi.roommatebackend.service.ColocataireService;
+import com.ilisi.roommatebackend.service.FiliereService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +28,21 @@ public class ColocataireController {
     @Autowired
     ColocataireService colocataireService;
 
+    @Autowired
+    FiliereService filiereService;
+
     @PostMapping
-    public ResponseEntity<ResponseBody<Colocataire>> insert(@RequestBody() Colocataire colocataire){
-        Colocataire coloc=colocataireService.create(colocataire);
-        return new ResponseEntity<ResponseBody<Colocataire>>
-                (new ResponseBody<Colocataire>(coloc), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<Colocataire>> insert(@RequestBody() ColocataireDto colocataire){
+        try {
+            Colocataire coloc = colocataire.getEntity();
+            coloc.setFiliere(filiereService.findById(colocataire.getFiliere()));
+            colocataireService.create(coloc);
+            return new ResponseEntity<ResponseBody<Colocataire>>
+                    (new ResponseBody<Colocataire>(coloc), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>
+                    (new ResponseBody<>(null, "Entity ( Filiere ) not found"), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/edit")
