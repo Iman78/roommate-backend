@@ -2,6 +2,8 @@ package com.ilisi.roommatebackend.controller;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
+import com.ilisi.roommatebackend.dto.OffreDto;
+import com.ilisi.roommatebackend.dto.OffreMapper;
 import com.ilisi.roommatebackend.model.Offre;
 import com.ilisi.roommatebackend.service.OffreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +17,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/offre")
 public class OffreController {
+
     @Autowired
     OffreService offreService;
 
+    @Autowired
+    OffreMapper offreMapper;
+
     @PostMapping
-    public ResponseEntity<ResponseBody<Offre>> insert(@RequestBody() Offre offre){
-        Offre off=offreService.create(offre);
-        return new ResponseEntity<ResponseBody<Offre>>
-                (new ResponseBody<Offre>(offre), HttpStatus.OK) ;
+    public ResponseEntity<ResponseBody<Offre>> insert(@RequestBody() OffreDto offre){
+        try {
+            Offre offreEntity = offreMapper.getEntity(offre);
+            offreService.create(offreEntity);
+            return new ResponseEntity<ResponseBody<Offre>>
+                    (new ResponseBody<Offre>(offreEntity), HttpStatus.OK);
+        }catch(BusinessException e){
+            return new ResponseEntity<>
+                    (new ResponseBody<Offre>(null, e.getMessage()), HttpStatus.OK);
+        }
     }
     @PostMapping("/edit")
     public ResponseEntity<ResponseBody<Offre>> edit(@RequestBody() Offre offre){
