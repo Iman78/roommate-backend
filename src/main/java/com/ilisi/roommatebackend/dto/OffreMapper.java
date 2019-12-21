@@ -9,6 +9,7 @@ import com.ilisi.roommatebackend.service.VilleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -39,6 +40,7 @@ public class OffreMapper {
         offre.setTitre(dto.getTitre());
         offre.setType(dto.getType());
         offre.setSurface(dto.getSurface());
+        offre.setDate(LocalDateTime.now());
 
         offre.setLocateur(new Locateur());
 

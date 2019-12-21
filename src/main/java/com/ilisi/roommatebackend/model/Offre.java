@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -62,6 +63,10 @@ public class Offre {
     @Getter
     @Setter
     private double prixLog;
+
+    @Getter
+    @Setter
+    private LocalDateTime date;
 
     @Getter
     @Setter
