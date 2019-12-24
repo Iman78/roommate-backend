@@ -2,10 +2,7 @@ package com.ilisi.roommatebackend.dto;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.model.*;
-import com.ilisi.roommatebackend.service.FaculteService;
-import com.ilisi.roommatebackend.service.LocateurService;
-import com.ilisi.roommatebackend.service.POIService;
-import com.ilisi.roommatebackend.service.VilleService;
+import com.ilisi.roommatebackend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +11,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 @Component
-public class OffreMapper {
+public class OffreColocationMapper {
+
     @Autowired
-    LocateurService locateurService;
+    ColocataireService colocataireService;
 
     @Autowired
     POIService poiService;
@@ -27,9 +25,9 @@ public class OffreMapper {
     @Autowired
     FaculteService faculteService;
 
-    public OffreLocation getEntity(OffreDto dto) throws BusinessException {
+    public OffreColocation getEntity(OffreColocationDto dto) throws BusinessException {
 
-        OffreLocation offre=new OffreLocation();
+        OffreColocation offre=new OffreColocation();
         offre.setAdresse(dto.getAdresse());
         offre.setDetail(dto.getDetail());
         offre.setMeuble(dto.isMeuble());
@@ -42,9 +40,8 @@ public class OffreMapper {
         offre.setType(dto.getType());
         offre.setSurface(dto.getSurface());
         offre.setDate(LocalDateTime.now());
-
-        Locateur locateur= locateurService.findById(dto.getLocateur());
-        offre.setLocateur(locateur);
+        Colocataire colocataire= colocataireService.findById(dto.getColocataire());
+        offre.setColocateur(colocataire);
 
         Ville villeEntity=villeService.findById(dto.getVille());
         offre.setVille(villeEntity);

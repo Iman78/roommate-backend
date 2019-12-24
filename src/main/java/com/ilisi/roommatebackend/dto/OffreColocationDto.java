@@ -1,16 +1,11 @@
 package com.ilisi.roommatebackend.dto;
 
-import com.ilisi.roommatebackend.core.exception.BusinessException;
-
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-public class OffreDto {
+public class OffreColocationDto {
 
     @Getter
     @Setter
@@ -27,6 +22,10 @@ public class OffreDto {
     @Getter
     @Setter
     private String type;
+
+    @Getter
+    @Setter
+    private String sexe;
 
     @Getter
     @Setter
@@ -71,11 +70,10 @@ public class OffreDto {
 
     @Getter
     @Setter
-    private int locateur;
+    private int colocataire;
+
 
     @Getter
     @Setter
     private int ville;
-
-
 }

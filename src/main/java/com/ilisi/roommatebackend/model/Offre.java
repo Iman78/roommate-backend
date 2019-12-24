@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="Offre")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Offre {
     @Id
     @Column(name = "id")
@@ -88,12 +89,6 @@ public class Offre {
     @Getter
     @Setter
     private Set<Faculte> listFac;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "locateur_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Getter
-    @Setter
-    private Locateur locateur;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ville_id", nullable = false)
