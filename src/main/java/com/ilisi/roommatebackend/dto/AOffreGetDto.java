@@ -1,11 +1,19 @@
 package com.ilisi.roommatebackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ilisi.roommatebackend.model.Faculte;
+import com.ilisi.roommatebackend.model.POI;
+import com.ilisi.roommatebackend.model.Ville;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
-public class OffreColocationDto {
+public class AOffreGetDto {
+    @Getter
+    @Setter
+    int id;
 
     @Getter
     @Setter
@@ -23,9 +31,6 @@ public class OffreColocationDto {
     @Setter
     private String type;
 
-    @Getter
-    @Setter
-    private String sexe;
 
     @Getter
     @Setter
@@ -57,23 +62,18 @@ public class OffreColocationDto {
 
     @Getter
     @Setter
-    private List<String> listImg;
-
-
-    @Getter
-    @Setter
-    private List<Integer> listPOI;
+    private LocalDateTime date;
 
     @Getter
     @Setter
-    private List<Integer> listFac;
+    private ArrayList<POI> listPOI;
 
     @Getter
     @Setter
-    private int colocataire;
+    private ArrayList<Faculte> listFac;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Getter
     @Setter
-    private int ville;
-
+    private Ville ville;
 }

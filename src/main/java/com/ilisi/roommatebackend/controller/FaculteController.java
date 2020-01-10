@@ -65,4 +65,14 @@ public class FaculteController  {
         }
     }
 
+    @PostMapping
+    public ResponseEntity<ResponseBody<Faculte>> insert(@RequestBody() Faculte offre){
+
+        Faculte faculte = faculteService.create(offre);
+        faculteService.create(faculte);
+        return new ResponseEntity<>
+                (new ResponseBody<>(faculte), HttpStatus.OK);
+
+    }
+
 }

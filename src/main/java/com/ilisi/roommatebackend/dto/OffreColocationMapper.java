@@ -3,12 +3,17 @@ package com.ilisi.roommatebackend.dto;
 import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.model.*;
 import com.ilisi.roommatebackend.service.*;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
+import java.util.List;
 
 @Component
 public class OffreColocationMapper {
@@ -41,7 +46,7 @@ public class OffreColocationMapper {
         offre.setSurface(dto.getSurface());
         offre.setDate(LocalDateTime.now());
         Colocataire colocataire= colocataireService.findById(dto.getColocataire());
-        offre.setColocateur(colocataire);
+        offre.setColocataire(colocataire);
 
         Ville villeEntity=villeService.findById(dto.getVille());
         offre.setVille(villeEntity);
@@ -59,10 +64,16 @@ public class OffreColocationMapper {
             offre.getListFac().add(fac);
         }
 
-        offre.setListImg(new ArrayList<>());
-        for(String id : dto.getListImg()){
-            offre.getListImg().add(id);
+        List<String> imgsDto= dto.getListImg();
+        ArrayList<OffreImages> imgs=new ArrayList<>();
+        for(String i: imgsDto){
+                byte[] img= Base64.getDecoder().decode(i.getBytes());
+                OffreImages offreImages=new OffreImages();
+                offreImages.setImage(BlobProxy.generateProxy(img));
+                offreImages.setOffre(offre);
+                imgs.add(offreImages);
         }
+        offre.setListImg(imgs);
 
         return offre;
 

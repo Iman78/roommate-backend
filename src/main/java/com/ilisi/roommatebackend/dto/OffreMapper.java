@@ -6,12 +6,15 @@ import com.ilisi.roommatebackend.service.FaculteService;
 import com.ilisi.roommatebackend.service.LocateurService;
 import com.ilisi.roommatebackend.service.POIService;
 import com.ilisi.roommatebackend.service.VilleService;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
+import java.util.List;
 
 @Component
 public class OffreMapper {
@@ -62,10 +65,16 @@ public class OffreMapper {
             offre.getListFac().add(fac);
         }
 
-        offre.setListImg(new ArrayList<>());
-        for(String id : dto.getListImg()){
-            offre.getListImg().add(id);
+        List<String> imgsDto= dto.getListImg();
+        ArrayList<OffreImages> imgs=new ArrayList<>();
+        for(String i: imgsDto){
+            byte[] img= Base64.getDecoder().decode(i.getBytes());
+            OffreImages offreImages=new OffreImages();
+            offreImages.setImage(BlobProxy.generateProxy(img));
+            offreImages.setOffre(offre);
+            imgs.add(offreImages);
         }
+        offre.setListImg(imgs);
 
         return offre;
 

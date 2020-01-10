@@ -1,5 +1,6 @@
 package com.ilisi.roommatebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -21,6 +22,7 @@ public class DemandeOffre {
     @Setter
     private LocalDateTime date;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "colocataire_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -28,6 +30,7 @@ public class DemandeOffre {
     @Setter
     private Colocataire colocateur;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "offre_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

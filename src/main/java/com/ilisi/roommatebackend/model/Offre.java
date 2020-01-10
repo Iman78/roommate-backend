@@ -1,5 +1,7 @@
 package com.ilisi.roommatebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -69,9 +72,13 @@ public class Offre {
     @Setter
     private LocalDateTime date;
 
+    @JsonIgnore
     @Getter
     @Setter
-    private ArrayList<String> listImg;
+    @OneToMany(mappedBy = "offre",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<OffreImages> listImg;
 
     @ManyToMany
     @JoinTable(
@@ -90,13 +97,13 @@ public class Offre {
     @Setter
     private Set<Faculte> listFac;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ville_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter
     @Setter
     private Ville ville;
-
 
 }
 

@@ -1,5 +1,6 @@
 package com.ilisi.roommatebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class OffreLocation extends Offre  {
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "locateur_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

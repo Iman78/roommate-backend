@@ -3,9 +3,10 @@ package com.ilisi.roommatebackend.controller;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
-import com.ilisi.roommatebackend.dto.OffreColocationDto;
-import com.ilisi.roommatebackend.dto.OffreColocationMapper;
+import com.ilisi.roommatebackend.dto.*;
+import com.ilisi.roommatebackend.model.Colocataire;
 import com.ilisi.roommatebackend.model.OffreColocation;
+import com.ilisi.roommatebackend.service.ColocataireService;
 import com.ilisi.roommatebackend.service.OffreColocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,19 @@ public class OffreColocationController {
 
     @Autowired
     OffreColocationMapper offreMapper;
+
+    @Autowired
+    ColocataireService colocataireService;
+
+    @Autowired
+    OffreColocationGetListMapper  offreColocationGetListMapper;
+
+    @Autowired
+    OffreColocationGetDetailsMapper offreColocationGetDetailsMapper;
+
+    @Autowired
+    OffreColocationGetListColocMapper offreColocationGetListColocMapper;
+
 
     @PostMapping
     public ResponseEntity<ResponseBody<OffreColocation>> insert(@RequestBody() OffreColocationDto offre){
@@ -56,17 +70,35 @@ public class OffreColocationController {
                 (new ResponseBody<>(), HttpStatus.OK) ;
     }
     @GetMapping
-    public ResponseEntity<ResponseBody<List<OffreColocation>>> get(){
+    public ResponseEntity<ResponseBody<List<OffreColocationGetListDto>>> get(){
         return new ResponseEntity<>(
-                new ResponseBody<>(offreService.retrieve()), HttpStatus.OK) ;
+                new ResponseBody<>(offreColocationGetListMapper.getDto(offreService.retrieve())), HttpStatus.OK) ;
+    }
+
+    @GetMapping("/colocataire/{id}")
+    public ResponseEntity<ResponseBody<List<OffreColocationGetListColocDto>>> getByLocateur(@PathVariable("id")int id){
+        try{
+            Colocataire loc=colocataireService.findById(id);
+            if(loc==null) return new ResponseEntity<>
+                    (new ResponseBody<>(null, "Locateur not found"), HttpStatus.OK) ;
+            List<OffreColocationGetListColocDto> list=offreColocationGetListColocMapper.getDto(
+                    offreService.findOffreByColocataire(loc)
+            );
+            return new ResponseEntity<>
+                    (new ResponseBody<>(list),HttpStatus.NOT_FOUND) ;
+
+        }catch(BusinessException e){
+            return new ResponseEntity<>
+                    (new ResponseBody<>(null, "Locateur not found"),HttpStatus.NOT_FOUND) ;
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseBody<OffreColocation>> getById(@PathVariable("id")int id){
+    public ResponseEntity<ResponseBody<OffreColocationGetDetailsDto>> getById(@PathVariable("id")int id){
         try {
             OffreColocation offre =offreService.findById(id);
             if(offre!=null) return new ResponseEntity<>
-                    (new ResponseBody<>(offre), HttpStatus.OK) ;
+                    (new ResponseBody<>(offreColocationGetDetailsMapper.getDto(offre)), HttpStatus.OK) ;
             return new ResponseEntity<>
                     (new ResponseBody<>(null, "Entity not found"), HttpStatus.OK) ;
         }catch(BusinessException e){

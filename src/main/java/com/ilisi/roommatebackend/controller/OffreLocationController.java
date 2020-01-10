@@ -2,10 +2,10 @@ package com.ilisi.roommatebackend.controller;
 
 import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
-import com.ilisi.roommatebackend.dto.OffreDto;
-import com.ilisi.roommatebackend.dto.OffreMapper;
-import com.ilisi.roommatebackend.model.Offre;
+import com.ilisi.roommatebackend.dto.*;
+import com.ilisi.roommatebackend.model.Locateur;
 import com.ilisi.roommatebackend.model.OffreLocation;
+import com.ilisi.roommatebackend.service.LocateurService;
 import com.ilisi.roommatebackend.service.OffreLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,19 @@ public class OffreLocationController {
     OffreLocationService offreService;
 
     @Autowired
+    LocateurService locateurService;
+
+    @Autowired
     OffreMapper offreMapper;
+
+    @Autowired
+    OffreLocationGetListMapper offreLocationGetListMapper;
+
+    @Autowired
+    OffreLocationGetDetailsMapper offreLocationGetDetailsMapper;
+
+    @Autowired
+    OffreLocationGetListLocMapper offreLocationGetListLocMapper;
 
     @PostMapping
     public ResponseEntity<ResponseBody<OffreLocation>> insert(@RequestBody() OffreDto offre){
@@ -57,17 +69,35 @@ public class OffreLocationController {
                 (new ResponseBody<>(), HttpStatus.OK) ;
     }
     @GetMapping
-    public ResponseEntity<ResponseBody<List<OffreLocation>>> get(){
+    public ResponseEntity<ResponseBody<List<OffreLocationGetListDto>>> get(){
         return new ResponseEntity<>(
-                new ResponseBody<>(offreService.retrieve()), HttpStatus.OK) ;
+                new ResponseBody<>(offreLocationGetListMapper.getDto(offreService.retrieve())), HttpStatus.OK) ;
+    }
+
+    @GetMapping("/locateur/{id}")
+    public ResponseEntity<ResponseBody<List<OffreLocationGetListLocDto>>> getByLocateur(@PathVariable("id")int id){
+        try{
+            Locateur loc=locateurService.findById(id);
+            if(loc==null) return new ResponseEntity<>
+                    (new ResponseBody<>(null, "Locateur not found"), HttpStatus.OK) ;
+            List<OffreLocationGetListLocDto> list=this.offreLocationGetListLocMapper.getDto(
+                    offreService.findOffreByLocateur(loc));
+
+            return new ResponseEntity<>
+                    (new ResponseBody<>(list),HttpStatus.NOT_FOUND) ;
+
+        }catch(BusinessException e){
+            return new ResponseEntity<>
+                    (new ResponseBody<>(null, "Locateur not found"),HttpStatus.NOT_FOUND) ;
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseBody<OffreLocation>> getById(@PathVariable("id")int id){
+    public ResponseEntity<ResponseBody<OffreLocationGetDetailsDto>> getById(@PathVariable("id")int id){
         try {
             OffreLocation offre =offreService.findById(id);
             if(offre!=null) return new ResponseEntity<>
-                    (new ResponseBody<>(offre), HttpStatus.OK) ;
+                    (new ResponseBody<>(offreLocationGetDetailsMapper.getDto(offre)), HttpStatus.OK) ;
             return new ResponseEntity<>
                     (new ResponseBody<>(null, "Entity not found"), HttpStatus.OK) ;
         }catch(BusinessException e){

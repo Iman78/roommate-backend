@@ -50,12 +50,12 @@ public class LocateurController {
         try {
             Locateur locateur =locateurService.findById(id);
             if(locateur!=null) return new ResponseEntity<ResponseBody<Locateur>>
-                    (new ResponseBody<Locateur>(locateur), HttpStatus.OK) ;
-            return new ResponseEntity<ResponseBody<Locateur>>
+                    (new ResponseBody<>(locateur), HttpStatus.OK) ;
+            return new ResponseEntity<>
                     (new ResponseBody<>(null, "Entity not found"), HttpStatus.OK) ;
         }catch(BusinessException e){
-            return new ResponseEntity<ResponseBody<Locateur>>
-                    (new ResponseBody<Locateur>(null, "Entity not found"),HttpStatus.NOT_FOUND) ;
+            return new ResponseEntity<>
+                    (new ResponseBody<>(null, "Entity not found"),HttpStatus.NOT_FOUND) ;
         }
     }
 }

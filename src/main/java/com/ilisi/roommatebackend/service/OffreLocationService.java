@@ -1,5 +1,6 @@
 package com.ilisi.roommatebackend.service;
 
+import com.ilisi.roommatebackend.model.Locateur;
 import com.ilisi.roommatebackend.model.OffreLocation;
 import com.ilisi.roommatebackend.model.OffreLocation;
 import com.ilisi.roommatebackend.repository.OffreLocationRepository;
@@ -20,4 +21,8 @@ public class OffreLocationService extends  BasicService<OffreLocation, Integer>{
         return offreRepository;
     }
 
+
+    public List<OffreLocation> findOffreByLocateur(Locateur locateur){
+        return this.offreRepository.findAllByLocateur(locateur);
+    }
 }
