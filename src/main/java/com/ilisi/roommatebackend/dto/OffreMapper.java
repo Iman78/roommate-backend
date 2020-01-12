@@ -33,6 +33,7 @@ public class OffreMapper {
     public OffreLocation getEntity(OffreDto dto) throws BusinessException {
 
         OffreLocation offre=new OffreLocation();
+        offre.setId(dto.getId());
         offre.setAdresse(dto.getAdresse());
         offre.setDetail(dto.getDetail());
         offre.setMeuble(dto.isMeuble());
@@ -58,7 +59,6 @@ public class OffreMapper {
             offre.getListPOI().add(poi);
         }
 
-
         offre.setListFac(new HashSet<>());
         for(int id : dto.getListFac()){
             Faculte fac =faculteService.findById(id);
@@ -74,8 +74,15 @@ public class OffreMapper {
             offreImages.setOffre(offre);
             imgs.add(offreImages);
         }
+        if(dto.getMainImage()!=null){
+            byte[] img= Base64.getDecoder().decode(dto.getMainImage().getBytes());
+            OffreImages offreImages=new OffreImages();
+            offreImages.setImage(BlobProxy.generateProxy(img));
+            offreImages.setOffre(offre);
+            offreImages.setMain(true);
+            imgs.add(offreImages);
+        }
         offre.setListImg(imgs);
-
         return offre;
 
     }

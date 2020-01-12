@@ -8,6 +8,10 @@ public class OffreDto {
 
     @Getter
     @Setter
+    private int id;
+
+    @Getter
+    @Setter
     private String titre;
 
     @Getter
@@ -54,6 +58,9 @@ public class OffreDto {
     @Setter
     private List<String> listImg;
 
+    @Getter
+    @Setter
+    private String mainImage;
 
     @Getter
     @Setter

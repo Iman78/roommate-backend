@@ -1,6 +1,7 @@
 package com.ilisi.roommatebackend.controller;
 
 
+import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.security.*;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
 import com.ilisi.roommatebackend.model.Colocataire;

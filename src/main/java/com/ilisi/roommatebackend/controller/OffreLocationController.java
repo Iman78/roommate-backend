@@ -4,14 +4,15 @@ import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
 import com.ilisi.roommatebackend.dto.*;
 import com.ilisi.roommatebackend.model.Locateur;
+import com.ilisi.roommatebackend.model.OffreImages;
 import com.ilisi.roommatebackend.model.OffreLocation;
 import com.ilisi.roommatebackend.service.LocateurService;
 import com.ilisi.roommatebackend.service.OffreLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -36,6 +37,29 @@ public class OffreLocationController {
 
     @Autowired
     OffreLocationGetListLocMapper offreLocationGetListLocMapper;
+
+    @GetMapping("/image/{id}")
+    public @org.springframework.web.bind.annotation.ResponseBody
+                 HttpEntity<byte[]> getImageOffre(@PathVariable int id) {
+        byte[] bytes=null;
+        try{
+            //bytes = ;
+            System.out.println(offreService.findById(id).getListImg());
+            OffreLocation offre=offreService.findById(id);
+            List<OffreImages> list=offre.getListImg();
+            OffreImages img= list.get(0);
+            bytes=img.getImage().getBytes(1, -1);
+
+        }catch(Exception e){
+
+        }
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=image=.jpeg");
+        headers.setContentLength(bytes.length);
+        return new HttpEntity<>(bytes, headers);
+    }
 
     @PostMapping
     public ResponseEntity<ResponseBody<OffreLocation>> insert(@RequestBody() OffreDto offre){

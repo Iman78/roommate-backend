@@ -23,7 +23,7 @@ public class OffreImages {
     private Blob image;
 
     @Getter @Setter
-    private boolean main;
+    private boolean main=false;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

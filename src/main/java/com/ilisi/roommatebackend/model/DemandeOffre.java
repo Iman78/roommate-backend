@@ -22,13 +22,17 @@ public class DemandeOffre {
     @Setter
     private LocalDateTime date;
 
+    @Getter
+    @Setter
+    String message;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "colocataire_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter
     @Setter
-    private Colocataire colocateur;
+    private Colocataire colocataire;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -37,5 +41,6 @@ public class DemandeOffre {
     @Getter
     @Setter
     private Offre offre;
+
 
 }

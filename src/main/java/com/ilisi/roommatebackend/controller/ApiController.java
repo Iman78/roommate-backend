@@ -19,7 +19,7 @@ public class ApiController {
     @GetMapping()
     public ResponseEntity<String> home() {
 
-        return new ResponseEntity<>("Event Planner API Version " , HttpStatus.OK);
+        return new ResponseEntity<>("Rommate API Version " , HttpStatus.OK);
     }
 
 }
