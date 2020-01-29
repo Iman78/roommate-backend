@@ -18,6 +18,13 @@ public class DemandeOffreDto {
     @Setter
     private String message;
 
+    @Getter
+    @Setter
+    String email;
+
+    @Getter
+    @Setter
+    String telephone;
 
     @Getter
     @Setter

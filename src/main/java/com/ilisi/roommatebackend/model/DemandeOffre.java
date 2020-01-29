@@ -26,6 +26,14 @@ public class DemandeOffre {
     @Setter
     String message;
 
+    @Getter
+    @Setter
+    String email;
+
+    @Getter
+    @Setter
+    String telephone;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "colocataire_id", nullable = false)

@@ -37,7 +37,7 @@ public class OffreLocationController {
 
     @Autowired
     OffreLocationGetListLocMapper offreLocationGetListLocMapper;
-
+/*
     @GetMapping("/image/{id}")
     public @org.springframework.web.bind.annotation.ResponseBody
                  HttpEntity<byte[]> getImageOffre(@PathVariable int id) {
@@ -60,6 +60,7 @@ public class OffreLocationController {
         headers.setContentLength(bytes.length);
         return new HttpEntity<>(bytes, headers);
     }
+    */
 
     @PostMapping
     public ResponseEntity<ResponseBody<OffreLocation>> insert(@RequestBody() OffreDto offre){
