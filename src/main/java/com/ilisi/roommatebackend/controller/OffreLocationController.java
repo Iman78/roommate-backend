@@ -104,12 +104,12 @@ public class OffreLocationController {
         try{
             Locateur loc=locateurService.findById(id);
             if(loc==null) return new ResponseEntity<>
-                    (new ResponseBody<>(null, "Locateur not found"), HttpStatus.OK) ;
+                    (new ResponseBody<>(null, "Locateur not found"), HttpStatus.NOT_FOUND) ;
             List<OffreLocationGetListLocDto> list=this.offreLocationGetListLocMapper.getDto(
                     offreService.findOffreByLocateur(loc));
 
             return new ResponseEntity<>
-                    (new ResponseBody<>(list),HttpStatus.NOT_FOUND) ;
+                    (new ResponseBody<>(list),HttpStatus.OK) ;
 
         }catch(BusinessException e){
             return new ResponseEntity<>

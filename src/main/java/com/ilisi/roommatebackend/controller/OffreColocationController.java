@@ -80,12 +80,12 @@ public class OffreColocationController {
         try{
             Colocataire loc=colocataireService.findById(id);
             if(loc==null) return new ResponseEntity<>
-                    (new ResponseBody<>(null, "Locateur not found"), HttpStatus.OK) ;
+                    (new ResponseBody<>(null, "Locateur not found"), HttpStatus.NOT_FOUND) ;
             List<OffreColocationGetListColocDto> list=offreColocationGetListColocMapper.getDto(
                     offreService.findOffreByColocataire(loc)
             );
             return new ResponseEntity<>
-                    (new ResponseBody<>(list),HttpStatus.NOT_FOUND) ;
+                    (new ResponseBody<>(list),HttpStatus.OK) ;
 
         }catch(BusinessException e){
             return new ResponseEntity<>

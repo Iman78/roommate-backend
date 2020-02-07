@@ -7,6 +7,7 @@ import com.ilisi.roommatebackend.model.Colocataire;
 import com.ilisi.roommatebackend.model.Filiere;
 import com.ilisi.roommatebackend.service.ColocataireService;
 import com.ilisi.roommatebackend.service.FiliereService;
+import com.ilisi.roommatebackend.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +32,15 @@ public class ColocataireController {
     @Autowired
     FiliereService filiereService;
 
+    @Autowired
+    ProfileService profileService;
+
     @PostMapping
     public ResponseEntity<ResponseBody<Colocataire>> insert(@RequestBody() ColocataireDto colocataire){
         try {
             Colocataire coloc = colocataire.getEntity();
             coloc.setFiliere(filiereService.findById(colocataire.getFiliere()));
+            coloc.setProfile(profileService.finByName("colocataire"));
             colocataireService.create(coloc);
             return new ResponseEntity<ResponseBody<Colocataire>>
                     (new ResponseBody<Colocataire>(coloc), HttpStatus.OK);

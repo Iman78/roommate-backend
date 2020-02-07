@@ -72,14 +72,17 @@ public class Offre {
     @Setter
     private LocalDateTime date;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     @Getter
     @Setter
     @OneToMany(mappedBy = "offre",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @OnDelete(action=OnDeleteAction.CASCADE)
     private List<OffreImages> listImg;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany
     @JoinTable(
             name = "offre_poi",
@@ -88,6 +91,8 @@ public class Offre {
     @Getter
     @Setter
     private Set<POI> listPOI;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany
     @JoinTable(
             name = "offre_fac",

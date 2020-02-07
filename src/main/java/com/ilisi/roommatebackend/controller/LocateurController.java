@@ -4,6 +4,7 @@ import com.ilisi.roommatebackend.core.exception.BusinessException;
 import com.ilisi.roommatebackend.core.utility.ResponseBody;
 import com.ilisi.roommatebackend.model.Locateur;
 import com.ilisi.roommatebackend.service.LocateurService;
+import com.ilisi.roommatebackend.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,14 @@ public class LocateurController {
     @Autowired
     LocateurService locateurService;
 
+    @Autowired
+    ProfileService profileService;
+
+
     @PostMapping
     public ResponseEntity<ResponseBody<Locateur>> insert(@RequestBody() Locateur locateur){
+
+        locateur.setProfile(profileService.finByName("locateur"));
         Locateur locat=locateurService.create(locateur);
         return new ResponseEntity<ResponseBody<Locateur>>
                 (new ResponseBody<Locateur>(locat), HttpStatus.OK) ;
